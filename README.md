@@ -1,41 +1,49 @@
-# Jekyll::Google::Tag::Manager
+# Jekyll Google Tag Manager Plugin
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/jekyll/google/tag/manager`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+A Jekyll plugin to insert Google Tag Manager tags into the head and body of your site.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add the plugin to your site's Gemfile:
 
 ```ruby
-gem 'jekyll-google-tag-manager'
+group :jekyll_plugins do
+  gem 'jekyll-google-tag-manager'
+end
 ```
 
 And then execute:
 
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install jekyll-google-tag-manager
+```bash
+$ bundle install
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+You must specify a single GTM container in your site's `_config.yml`.
 
-## Development
+```yaml
+google:
+  tag_manager:
+    container_id: GTM-NNNNNNN
+```
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+Add the following right after the opening of the `<head>` tag in your site template(s):
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+```liquid
+{% gtm head %}
+```
+
+Add the following right after the opening of the `<body>` tag in your site template(s):
+
+```liquid
+{% gtm body %}
+```
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/jekyll-google-tag-manager.
-
+Bug reports and pull requests are welcome on GitHub at https://github.com/t-richards/jekyll-google-tag-manager.
 
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
