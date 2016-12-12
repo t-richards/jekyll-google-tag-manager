@@ -28,7 +28,7 @@ module Jekyll
     def payload
       {
         "container_id" => context.registers[:site].config["google"]["tag_manager"]["container_id"],
-        "gtm_tag" => options
+        "gtm_tag"      => options
       }
     end
 

@@ -3,6 +3,6 @@ module Liquid; class Tag; end; end
 
 module Jekyll
   class GoogleTagManager < Liquid::Tag
-    VERSION = "0.1.0"
+    VERSION = "1.0.0".freeze
   end
 end
