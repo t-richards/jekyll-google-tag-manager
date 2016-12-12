@@ -3,9 +3,11 @@ require "liquid"
 
 module Jekyll
   class GoogleTagManager < Liquid::Tag
+    attr_accessor :context
+
     def initialize(_tag_name, text, _tokens)
       super
-      @text = text
+      @text = text.strip
     end
 
     def render(context)
@@ -15,6 +17,32 @@ module Jekyll
 
     def template
       @template ||= Liquid::Template.parse template_contents
+    end
+
+    def options
+      {
+        "version" => Jekyll::GoogleTagManager::VERSION
+      }
+    end
+
+    def payload
+      {
+        "container_id" => context.registers[:site].config["google"]["tag_manager"]["container_id"],
+        "gtm_tag" => options
+      }
+    end
+
+    def info
+      {
+        :registers => context.registers,
+        :filters   => [Jekyll::Filters]
+      }
+    end
+
+    def template_contents
+      @template_contents ||= begin
+        File.read(template_path)
+      end
     end
 
     def template_path
