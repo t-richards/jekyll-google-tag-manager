@@ -25,9 +25,13 @@ module Jekyll
       }
     end
 
+    def container_id(config)
+      config.dig("google", "tag_manager", "container_id") || "GTM-NNNNNNN"
+    end
+
     def payload
       {
-        "container_id" => context.registers[:site].config["google"]["tag_manager"]["container_id"],
+        "container_id" => container_id(context.registers[:site].config),
         "gtm_tag"      => options
       }
     end
