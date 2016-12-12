@@ -1,6 +1,6 @@
 # Jekyll Google Tag Manager Plugin
 
-A Jekyll plugin to insert Google Tag Manager tags into the head and body of your site.
+A Jekyll plugin to insert [Google Tag Manager][gtm] tags into the head and body of your site.
 
 ## Installation
 
@@ -47,3 +47,5 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/t-rich
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+
+[gtm]: https://www.google.com/analytics/tag-manager/
