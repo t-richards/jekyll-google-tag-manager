@@ -1,2 +1,5 @@
 inherit_gem:
   jekyll: .rubocop.yml
+AllCops:
+  Exclude:
+    - 'bin/**/*'

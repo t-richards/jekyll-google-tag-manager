@@ -21,7 +21,7 @@ module Jekyll
 
     def options
       {
-        "version" => Jekyll::GoogleTagManager::VERSION
+        "version" => Jekyll::GoogleTagManager::VERSION,
       }
     end
 
@@ -32,14 +32,14 @@ module Jekyll
     def payload
       {
         "container_id" => container_id(context.registers[:site].config),
-        "gtm_tag"      => options
+        "gtm_tag"      => options,
       }
     end
 
     def info
       {
         :registers => context.registers,
-        :filters   => [Jekyll::Filters]
+        :filters   => [Jekyll::Filters],
       }
     end
 
