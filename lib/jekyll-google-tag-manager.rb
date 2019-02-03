@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require "jekyll-google-tag-manager/version"
-require "liquid"
+require 'jekyll-google-tag-manager/version'
+require 'liquid'
 
 module Jekyll
   class GoogleTagManager < Liquid::Tag
     attr_accessor :context
 
-    PLACEHOLDER_CONTAINER_ID = "GTM-NNNNNNN"
+    PLACEHOLDER_CONTAINER_ID = 'GTM-NNNNNNN'.freeze
 
     def initialize(_tag_name, text, _tokens)
       super
@@ -25,29 +25,29 @@ module Jekyll
 
     def options
       {
-        "version" => Jekyll::GoogleTagManager::VERSION,
+        'version' => Jekyll::GoogleTagManager::VERSION
       }
     end
 
     def container_id(config)
-      config.dig("google", "tag_manager", "container_id") || PLACEHOLDER_CONTAINER_ID
+      config.dig('google', 'tag_manager', 'container_id') || PLACEHOLDER_CONTAINER_ID
     rescue TypeError
-      Jekyll.logger.warn("Your GTM container id is malformed or missing.")
+      Jekyll.logger.warn('Your GTM container id is malformed or missing.')
       Jekyll.logger.warn("Using fallback: #{PLACEHOLDER_CONTAINER_ID}")
       PLACEHOLDER_CONTAINER_ID
     end
 
     def payload
       {
-        "container_id" => container_id(context.registers[:site].config),
-        "gtm_tag"      => options,
+        'container_id' => container_id(context.registers[:site].config),
+        'gtm_tag' => options
       }
     end
 
     def info
       {
-        :registers => context.registers,
-        :filters   => [Jekyll::Filters],
+        registers: context.registers,
+        filters: [Jekyll::Filters]
       }
     end
 
@@ -65,4 +65,4 @@ module Jekyll
   end
 end
 
-Liquid::Template.register_tag("gtm", Jekyll::GoogleTagManager)
+Liquid::Template.register_tag('gtm', Jekyll::GoogleTagManager)
