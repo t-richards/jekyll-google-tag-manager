@@ -10,7 +10,9 @@ Gem::Specification.new do |spec|
   spec.authors = ['Tom Richards']
   spec.email = ['tom@tomrichards.net']
 
+  # rubocop:disable Metrics/LineLength
   spec.summary = 'A Jekyll plugin to add Google Tag Manager snippets to your site.'
+  # rubocop:enable Metrics/LineLength
   spec.homepage = 'https://github.com/t-richards/jekyll-google-tag-manager'
   spec.license = 'MIT'
 

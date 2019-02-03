@@ -26,9 +26,7 @@ module Jekyll
         Tokenizer.new(''),
         ParseContext.new
       )
-      assert(tag.template_path.end_with?(
-               'jekyll-google-tag-manager/lib/template-body.html'
-             ))
+      assert(tag.template_path.end_with?('lib/template-body.html'))
     end
 
     def test_head_template_path
@@ -38,11 +36,7 @@ module Jekyll
         Tokenizer.new(''),
         ParseContext.new
       )
-      assert(
-        tag.template_path.end_with?(
-          'jekyll-google-tag-manager/lib/template-head.html'
-        )
-      )
+      assert(tag.template_path.end_with?('lib/template-head.html'))
     end
 
     def test_normal_configuration_fetching
@@ -66,7 +60,9 @@ module Jekyll
       }
       expected_id = 'GTM-NNNNNNN'
       assert_equal(expected_id, @gtm_tag.container_id(config))
+    end
 
+    def test_empty_configuration_fetching
       config = {}
       assert_equal(expected_id, @gtm_tag.container_id(config))
     end
