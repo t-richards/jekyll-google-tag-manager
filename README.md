@@ -2,8 +2,8 @@
 
 A [Jekyll][jekyll] plugin to insert [Google Tag Manager][gtm] tags into the head and body of your site.
 
-[![Travis](https://img.shields.io/travis/t-richards/jekyll-google-tag-manager.svg)](https://travis-ci.org/t-richards/jekyll-google-tag-manager)
-[![Gem](https://img.shields.io/gem/v/jekyll-google-tag-manager.svg)](https://rubygems.org/gems/jekyll-google-tag-manager)
+[![CircleCI Build Status](https://img.shields.io/circleci/project/github/t-richards/jekyll-google-tag-manager/master.svg?style=flat-square)](https://circleci.com/gh/t-richards/jekyll-google-tag-manager)
+[![Gem Version](https://img.shields.io/gem/v/jekyll-google-tag-manager.svg?style=flat-square)](https://rubygems.org/gems/jekyll-google-tag-manager)
 
 ## Installation
 
