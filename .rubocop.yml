@@ -1,5 +1,13 @@
 inherit_gem:
   jekyll: .rubocop.yml
+
 AllCops:
+  Include:
+    - '*.gemspec'
+    - '**/*.rb'
+    - Gemfile
+    - Rakefile
   Exclude:
     - 'bin/**/*'
+    - 'vendor/**/*'
+

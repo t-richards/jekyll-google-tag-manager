@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "jekyll-google-tag-manager/version"
 require "liquid"
 
