@@ -4,10 +4,11 @@ require 'jekyll-google-tag-manager/version'
 require 'liquid'
 
 module Jekyll
+  # Google Tag Manager tag, renders Liquid templates
   class GoogleTagManager < Liquid::Tag
     attr_accessor :context
 
-    PLACEHOLDER_CONTAINER_ID = 'GTM-NNNNNNN'
+    PLACEHOLDER_ID = 'GTM-NNNNNNN'
 
     def initialize(_tag_name, text, _tokens)
       super
@@ -30,11 +31,11 @@ module Jekyll
     end
 
     def container_id(config)
-      config.dig('google', 'tag_manager', 'container_id') || PLACEHOLDER_CONTAINER_ID
+      config.dig('google', 'tag_manager', 'container_id') || PLACEHOLDER_ID
     rescue TypeError
       Jekyll.logger.warn('Your GTM container id is malformed or missing.')
-      Jekyll.logger.warn("Using fallback: #{PLACEHOLDER_CONTAINER_ID}")
-      PLACEHOLDER_CONTAINER_ID
+      Jekyll.logger.warn("Using fallback: #{PLACEHOLDER_ID}")
+      PLACEHOLDER_ID
     end
 
     def payload

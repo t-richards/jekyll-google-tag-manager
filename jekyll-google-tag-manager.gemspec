@@ -5,16 +5,18 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'jekyll-google-tag-manager/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'jekyll-google-tag-manager'
-  spec.version       = Jekyll::GoogleTagManager::VERSION
-  spec.authors       = ['Tom Richards']
-  spec.email         = ['tom@tomrichards.net']
+  spec.name = 'jekyll-google-tag-manager'
+  spec.version = Jekyll::GoogleTagManager::VERSION
+  spec.authors = ['Tom Richards']
+  spec.email = ['tom@tomrichards.net']
 
-  spec.summary       = 'A Jekyll plugin to add Google Tag Manager snippets to your site.'
-  spec.homepage      = 'https://github.com/t-richards/jekyll-google-tag-manager'
-  spec.license       = 'MIT'
+  spec.summary = 'A Jekyll plugin to add Google Tag Manager snippets to your site.'
+  spec.homepage = 'https://github.com/t-richards/jekyll-google-tag-manager'
+  spec.license = 'MIT'
 
-  spec.files         = `git ls-files -z`.split("\x0").grep(/^(LICENSE|README\.md|lib)/)
+  all_files = `git ls-files -z`.split("\x0")
+  spec.files = all_files.grep(%r{^(lib)/})
+  spec.extra_rdoc_files = %w[README.md LICENSE]
   spec.require_paths = ['lib']
 
   # Require Ruby 2.3 for Hash#dig
