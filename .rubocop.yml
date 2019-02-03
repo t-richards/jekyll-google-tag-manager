@@ -1,4 +1,5 @@
 AllCops:
+  TargetRubyVersion: 2.3
   Include:
     - '*.gemspec'
     - '**/*.rb'
@@ -7,3 +8,7 @@ AllCops:
   Exclude:
     - 'bin/**/*'
     - 'vendor/**/*'
+
+Naming/FileName:
+  Exclude:
+    - 'lib/jekyll-google-tag-manager.rb'

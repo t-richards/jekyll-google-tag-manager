@@ -7,7 +7,7 @@ module Jekyll
   class GoogleTagManager < Liquid::Tag
     attr_accessor :context
 
-    PLACEHOLDER_CONTAINER_ID = 'GTM-NNNNNNN'.freeze
+    PLACEHOLDER_CONTAINER_ID = 'GTM-NNNNNNN'
 
     def initialize(_tag_name, text, _tokens)
       super

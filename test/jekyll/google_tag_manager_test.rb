@@ -37,16 +37,30 @@ class Jekyll::GoogleTagManagerTest < Minitest::Test
       Tokenizer.new(''),
       ParseContext.new
     )
-    assert(tag.template_path.end_with?(
-             'jekyll-google-tag-manager/lib/template-head.html'
-           ))
+    assert(
+      tag.template_path.end_with?(
+        'jekyll-google-tag-manager/lib/template-head.html'
+      )
+    )
   end
 
   def test_configuration_fetching
-    config = { 'google' => { 'tag_manager' => { 'container_id' => 'correct' } } }
+    config = {
+      'google' => {
+        'tag_manager' => {
+          'container_id' => 'correct'
+        }
+      }
+    }
     assert_equal('correct', @gtm_tag.container_id(config))
 
-    config = { 'google' => { 'tag_manager' => { 'false_container_thing' => 'derp' } } }
+    config = {
+      'google' => {
+        'tag_manager' => {
+          'false_container_thing' => 'derp'
+        }
+      }
+    }
     assert_equal(
       Jekyll::GoogleTagManager::PLACEHOLDER_CONTAINER_ID,
       @gtm_tag.container_id(config)
