@@ -52,12 +52,6 @@ class Jekyll::GoogleTagManagerTest < Minitest::Test
       @gtm_tag.container_id(config)
     )
 
-    config = { "google" => { "tag_manager" => "stringvalue" } }
-    assert_equal(
-      Jekyll::GoogleTagManager::PLACEHOLDER_CONTAINER_ID,
-      @gtm_tag.container_id(config)
-    )
-
     config = {}
     assert_equal(
       Jekyll::GoogleTagManager::PLACEHOLDER_CONTAINER_ID,

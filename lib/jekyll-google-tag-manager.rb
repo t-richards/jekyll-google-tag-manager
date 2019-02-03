@@ -30,7 +30,10 @@ module Jekyll
     end
 
     def container_id(config)
-      config.dig("google", "tag_manager", "container_id") || PLACEHOLDER_CONTAINER_ID
+      id = config.fetch("google", {}).fetch("tag_manager", {}).fetch("container_id", nil)
+      return PLACEHOLDER_CONTAINER_ID if id.nil?
+
+      id
     rescue TypeError
       Jekyll.logger.warn("Your GTM container id is malformed or missing.")
       Jekyll.logger.warn("Using fallback: #{PLACEHOLDER_CONTAINER_ID}")

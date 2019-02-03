@@ -17,13 +17,14 @@ Gem::Specification.new do |spec|
   spec.files         = `git ls-files -z`.split("\x0").grep(%r!^(LICENSE|README\.md|lib)!)
   spec.require_paths = ["lib"]
 
-  # Require Ruby 2.3 for Hash#dig
-  spec.required_ruby_version = ">= 2.3.1"
+  # Match Jekyll requirements
+  spec.required_ruby_version = ">= 2.1"
 
   spec.add_dependency "jekyll", "~> 3.3"
 
   spec.add_development_dependency "bundler", "~> 2.0"
+  spec.add_development_dependency "irb", "~> 1.0"
   spec.add_development_dependency "minitest", "~> 5.0"
-  spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "rake", "~> 12.3"
   spec.add_development_dependency "rubocop", "~> 0.56.0"
 end
