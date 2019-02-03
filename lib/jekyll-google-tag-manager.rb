@@ -7,7 +7,7 @@ module Jekyll
   class GoogleTagManager < Liquid::Tag
     attr_accessor :context
 
-    PLACEHOLDER_CONTAINER_ID = "GTM-NNNNNNN".freeze
+    PLACEHOLDER_CONTAINER_ID = "GTM-NNNNNNN"
 
     def initialize(_tag_name, text, _tokens)
       super
@@ -30,10 +30,7 @@ module Jekyll
     end
 
     def container_id(config)
-      id = config.fetch("google", {}).fetch("tag_manager", {}).fetch("container_id", nil)
-      return PLACEHOLDER_CONTAINER_ID if id.nil?
-
-      id
+      config.dig("google", "tag_manager", "container_id") || PLACEHOLDER_CONTAINER_ID
     rescue TypeError
       Jekyll.logger.warn("Your GTM container id is malformed or missing.")
       Jekyll.logger.warn("Using fallback: #{PLACEHOLDER_CONTAINER_ID}")

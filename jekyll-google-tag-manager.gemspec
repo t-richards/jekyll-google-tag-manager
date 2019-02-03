@@ -17,8 +17,8 @@ Gem::Specification.new do |spec|
   spec.files         = `git ls-files -z`.split("\x0").grep(%r!^(LICENSE|README\.md|lib)!)
   spec.require_paths = ["lib"]
 
-  # Match Jekyll requirements
-  spec.required_ruby_version = ">= 2.1"
+  # Require Ruby 2.3 for Hash#dig
+  spec.required_ruby_version = ">= 2.3.1"
 
   spec.add_dependency "jekyll", "~> 3.3"
 
