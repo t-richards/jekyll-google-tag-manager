@@ -1,5 +1,14 @@
-inherit_gem:
-  jekyll: .rubocop.yml
 AllCops:
+  TargetRubyVersion: 2.3
+  Include:
+    - '*.gemspec'
+    - '**/*.rb'
+    - Gemfile
+    - Rakefile
   Exclude:
     - 'bin/**/*'
+    - 'vendor/**/*'
+
+Naming/FileName:
+  Exclude:
+    - 'lib/jekyll-google-tag-manager.rb'
