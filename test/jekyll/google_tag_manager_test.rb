@@ -64,6 +64,7 @@ module Jekyll
 
     def test_empty_configuration_fetching
       config = {}
+      expected_id = 'GTM-NNNNNNN'
       assert_equal(expected_id, @gtm_tag.container_id(config))
     end
   end
