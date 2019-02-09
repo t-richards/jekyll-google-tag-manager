@@ -26,3 +26,9 @@ end
 def make_context
   Liquid::Context.new({}, {}, site: make_site)
 end
+
+def make_bad_context
+  site = make_site
+  site.config['google'] = Object.new
+  Liquid::Context.new({}, {}, site: site)
+end

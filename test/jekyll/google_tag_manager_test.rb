@@ -90,6 +90,15 @@ module Jekyll
       assert_includes(output, 'ns.html')
     end
 
+    def test_it_gracefully_handles_malformed_config
+      context = make_bad_context
+      tag = Liquid::Template.parse('{% gtm body %}')
+
+      tag.render!(context)
+
+      assert_includes(Jekyll.logger.messages, 'Using fallback: GTM-NNNNNNN ')
+    end
+
     def test_it_gracefully_handles_invalid_text
       assert_raises(Jekyll::GoogleTagManager::InvalidSectionError) do
         Liquid::Template.parse('{% gtm foobar %}')
