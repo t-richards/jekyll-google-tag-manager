@@ -89,5 +89,11 @@ module Jekyll
       assert_includes(output, 'iframe')
       assert_includes(output, 'ns.html')
     end
+
+    def test_it_gracefully_handles_invalid_text
+      assert_raises(Jekyll::GoogleTagManager::InvalidSectionError) do
+        Liquid::Template.parse('{% gtm foobar %}')
+      end
+    end
   end
 end

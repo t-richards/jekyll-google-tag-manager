@@ -10,9 +10,9 @@ Gem::Specification.new do |spec|
   spec.authors = ['Tom Richards']
   spec.email = ['tom@tomrichards.net']
 
-  # rubocop:disable Metrics/LineLength
-  spec.summary = 'A Jekyll plugin to add Google Tag Manager snippets to your site.'
-  # rubocop:enable Metrics/LineLength
+  spec.summary = <<~SUMMARY
+    A Jekyll plugin to add Google Tag Manager snippets to your site.
+  SUMMARY
   spec.homepage = 'https://github.com/t-richards/jekyll-google-tag-manager'
   spec.license = 'MIT'
 
@@ -21,7 +21,7 @@ Gem::Specification.new do |spec|
   spec.extra_rdoc_files = %w[README.md LICENSE]
   spec.require_paths = ['lib']
 
-  # Require Ruby 2.3 for Hash#dig
+  # Require Ruby 2.3 for Hash#dig and squiggly heredoc
   spec.required_ruby_version = '>= 2.3.1'
 
   spec.add_development_dependency 'bundler', '~> 2.0'
