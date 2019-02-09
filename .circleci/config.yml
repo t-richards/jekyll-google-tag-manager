@@ -61,7 +61,3 @@ jobs:
             cd pkg
             tar xf *.gem
             tar tvf data.tar.gz
-
-      - store_artifacts:
-          path: coverage
-          prefix: coverage
