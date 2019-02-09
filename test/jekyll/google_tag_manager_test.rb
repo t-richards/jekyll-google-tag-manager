@@ -7,6 +7,8 @@ module Jekyll
     include Liquid
 
     def setup
+      Liquid::Template.error_mode = :strict
+
       @gtm_tag = Jekyll::GoogleTagManager.parse(
         'gtm',
         'body',
@@ -66,6 +68,20 @@ module Jekyll
       config = {}
       expected_id = 'GTM-NNNNNNN'
       assert_equal(expected_id, @gtm_tag.container_id(config))
+    end
+
+    def test_it_renders_head_tag_properly
+      context = make_context
+      head = '{% gtm head %}'
+      tag = Liquid::Template.parse(head)
+      assert_includes(tag.render!(context), 'gtm.js')
+    end
+
+    def test_it_renders_body_tag_properly
+      context = make_context
+      body = '{% gtm body %}'
+      tag = Liquid::Template.parse(body)
+      assert_includes(tag.render!(context), 'ns.html')
     end
   end
 end

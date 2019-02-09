@@ -12,3 +12,12 @@ require 'minitest/autorun'
 require 'minitest/rg'
 
 Jekyll.logger = Logger.new(StringIO.new)
+
+def make_site
+  config = Jekyll.configuration
+  Jekyll::Site.new(config)
+end
+
+def make_context
+  Liquid::Context.new({}, {}, site: make_site)
+end

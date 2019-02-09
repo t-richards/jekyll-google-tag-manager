@@ -3,6 +3,7 @@
 require 'jekyll-google-tag-manager/version'
 require 'liquid'
 
+# Add our tag to the Jekyll top-level module
 module Jekyll
   # Google Tag Manager tag, renders Liquid templates
   class GoogleTagManager < Liquid::Tag
