@@ -72,16 +72,22 @@ module Jekyll
 
     def test_it_renders_head_tag_properly
       context = make_context
-      head = '{% gtm head %}'
-      tag = Liquid::Template.parse(head)
-      assert_includes(tag.render!(context), 'gtm.js')
+      tag = Liquid::Template.parse('{% gtm head %}')
+
+      output = tag.render!(context)
+
+      assert_includes(output, 'script')
+      assert_includes(output, 'gtm.js')
     end
 
     def test_it_renders_body_tag_properly
       context = make_context
-      body = '{% gtm body %}'
-      tag = Liquid::Template.parse(body)
-      assert_includes(tag.render!(context), 'ns.html')
+      tag = Liquid::Template.parse('{% gtm body %}')
+
+      output = tag.render!(context)
+
+      assert_includes(output, 'iframe')
+      assert_includes(output, 'ns.html')
     end
   end
 end
