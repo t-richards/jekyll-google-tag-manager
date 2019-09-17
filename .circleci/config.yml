@@ -20,10 +20,7 @@ jobs:
           name: Install Bundler 2
           command: |
             sudo gem update --system
-            sudo gem uninstall bundler
-            sudo rm /usr/local/bin/bundle
-            sudo rm /usr/local/bin/bundler
-            sudo gem install bundler
+            sudo gem install bundler -v 2.0.2
 
       - run:
           name: Bundler version

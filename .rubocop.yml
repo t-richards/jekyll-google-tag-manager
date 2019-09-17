@@ -6,7 +6,8 @@ AllCops:
     - Gemfile
     - Rakefile
   Exclude:
-    - 'bin/**/*'
+    - bin/rake
+    - bin/rubocop
     - 'vendor/**/*'
 
 Naming/FileName:

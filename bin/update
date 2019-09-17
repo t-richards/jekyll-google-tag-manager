@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'fileutils'
+
+# Bump deps
+FileUtils.rm_f('Gemfile.lock')
+system('bundle install')
+system('bin/rubocop -a')
