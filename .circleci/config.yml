@@ -20,7 +20,7 @@ jobs:
           name: Install Bundler 2
           command: |
             sudo gem update --system
-            sudo gem install bundler -v 2.0.2
+            sudo gem install bundler -f -v 2.0.2
 
       - run:
           name: Bundler version
@@ -58,3 +58,7 @@ jobs:
             cd pkg
             tar xf *.gem
             tar tvf data.tar.gz
+
+      - store_artifacts:
+          path: coverage
+          prefix: coverage
