@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
+module Liquid; class Tag; end; end
+
 module Jekyll
-  class GoogleTagManager
+  class GoogleTagManager < Liquid::Tag
     # The base class from which other exceptions are derived
     class Error < StandardError; end
 

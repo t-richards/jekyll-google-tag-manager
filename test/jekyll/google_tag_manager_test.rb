@@ -104,5 +104,9 @@ module Jekyll
         Liquid::Template.parse('{% gtm foobar %}')
       end
     end
+
+    def test_it_has_the_proper_superclass
+      assert_equal(Liquid::Tag, Jekyll::GoogleTagManager.superclass)
+    end
   end
 end

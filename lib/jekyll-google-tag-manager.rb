@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'jekyll-google-tag-manager/errors'
 require 'jekyll-google-tag-manager/version'
+require 'jekyll-google-tag-manager/errors'
 require 'liquid'
 
 # Add our tag to the Jekyll top-level module
