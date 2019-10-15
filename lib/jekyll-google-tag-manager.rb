@@ -13,6 +13,8 @@ module Jekyll
     PLACEHOLDER_ID = 'GTM-NNNNNNN'
     VALID_SECTIONS = %w[body head].freeze
 
+    @@warning_shown = false
+
     def initialize(_tag_name, text, _tokens)
       super
       @text = text.strip
@@ -39,11 +41,26 @@ module Jekyll
     end
 
     def container_id(config)
-      config.dig('google', 'tag_manager', 'container_id') || PLACEHOLDER_ID
+      gtm_container_id = config.dig('google', 'tag_manager', 'container_id')
+
+      if gtm_container_id.nil?
+        warn_bad_config!
+        return PLACEHOLDER_ID
+      end
+
+      gtm_container_id
     rescue TypeError
+      warn_bad_config!
+      PLACEHOLDER_ID
+    end
+
+    def warn_bad_config!
+      return if @@warning_shown
+
+      @@warning_shown = true
+      Jekyll.logger.warn('[WARNING]: jekyll-google-tag-manager')
       Jekyll.logger.warn('Your GTM container id is malformed or missing.')
       Jekyll.logger.warn("Using fallback: #{PLACEHOLDER_ID}")
-      PLACEHOLDER_ID
     end
 
     def payload

@@ -68,6 +68,7 @@ module Jekyll
       config = {}
       expected_id = 'GTM-NNNNNNN'
       assert_equal(expected_id, @gtm_tag.container_id(config))
+      assert_includes(Jekyll.logger.messages, 'Using fallback: GTM-NNNNNNN ')
     end
 
     def test_it_renders_head_tag_properly

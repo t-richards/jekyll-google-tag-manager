@@ -13,3 +13,7 @@ AllCops:
 Naming/FileName:
   Exclude:
     - 'lib/jekyll-google-tag-manager.rb'
+
+Style/ClassVars:
+  Exclude:
+    - 'lib/jekyll-google-tag-manager.rb'
