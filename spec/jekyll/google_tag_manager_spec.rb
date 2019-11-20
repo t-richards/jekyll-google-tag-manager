@@ -2,15 +2,13 @@
 
 require 'spec_helper'
 
-include Liquid
-
 RSpec.describe Jekyll::GoogleTagManager do
   let(:gtm_tag) do
     described_class.parse(
       'gtm',
       'body',
-      Tokenizer.new(''),
-      ParseContext.new
+      Liquid::Tokenizer.new(''),
+      Liquid::ParseContext.new
     )
   end
 
@@ -29,8 +27,8 @@ RSpec.describe Jekyll::GoogleTagManager, '#template_path' do
     gtm_tag = Jekyll::GoogleTagManager.parse(
       'gtm',
       'body',
-      Tokenizer.new(''),
-      ParseContext.new
+      Liquid::Tokenizer.new(''),
+      Liquid::ParseContext.new
     )
 
     expect(gtm_tag.template_path).to end_with('lib/template-body.html')
@@ -40,8 +38,8 @@ RSpec.describe Jekyll::GoogleTagManager, '#template_path' do
     gtm_tag = described_class.parse(
       'gtm',
       'head',
-      Tokenizer.new(''),
-      ParseContext.new
+      Liquid::Tokenizer.new(''),
+      Liquid::ParseContext.new
     )
 
     expect(gtm_tag.template_path).to end_with('lib/template-head.html')
@@ -53,8 +51,8 @@ RSpec.describe Jekyll::GoogleTagManager, '#container_id' do
     described_class.parse(
       'gtm',
       'body',
-      Tokenizer.new(''),
-      ParseContext.new
+      Liquid::Tokenizer.new(''),
+      Liquid::ParseContext.new
     )
   end
 
@@ -129,8 +127,8 @@ RSpec.describe Jekyll::GoogleTagManager, '#render' do
     described_class.parse(
       'gtm',
       'body',
-      Tokenizer.new(''),
-      ParseContext.new
+      Liquid::Tokenizer.new(''),
+      Liquid::ParseContext.new
     )
   end
 

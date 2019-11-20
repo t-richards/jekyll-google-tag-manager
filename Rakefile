@@ -5,11 +5,17 @@ require 'rspec/core/rake_task'
 
 RSpec::Core::RakeTask.new(:spec)
 
-namespace :spec do
-  desc 'Run mutation testing'
-  task :mutant do
-    sh "bin/mutant --include lib --require 'jekyll-google-tag-manager' --use rspec --fail-fast -- 'Jekyll::GoogleTagManager'"
-  end
+desc 'Run mutation testing'
+task :mutant do
+  sh %w[
+    bin/mutant
+    --include lib
+    --require jekyll-google-tag-manager
+    --use rspec
+    --fail-fast
+    --
+    Jekyll::GoogleTagManager
+  ].join(' ')
 end
 
-task default: :test
+task default: :spec

@@ -31,7 +31,7 @@ module Jekyll
     end
 
     def template
-      @template ||= Template.parse(template_contents)
+      @template ||= Liquid::Template.parse(template_contents)
     end
 
     def container_id(config)
