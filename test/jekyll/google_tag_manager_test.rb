@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require_relative '../test_helper'
 
 module Jekyll
   class GoogleTagManagerTest < Minitest::Test
+    cover 'Jekyll::GoogleTagManager'
     include Liquid
 
     def setup
+      Jekyll.logger.messages.clear
       Liquid::Template.error_mode = :strict
 
       @gtm_tag = Jekyll::GoogleTagManager.parse(
@@ -28,6 +30,7 @@ module Jekyll
         Tokenizer.new(''),
         ParseContext.new
       )
+
       assert(tag.template_path.end_with?('lib/template-body.html'))
     end
 
@@ -38,6 +41,7 @@ module Jekyll
         Tokenizer.new(''),
         ParseContext.new
       )
+
       assert(tag.template_path.end_with?('lib/template-head.html'))
     end
 
@@ -49,7 +53,9 @@ module Jekyll
           }
         }
       }
-      assert_equal('correct', @gtm_tag.container_id(config))
+      actual_id = @gtm_tag.container_id(config)
+
+      assert_equal('correct', actual_id)
     end
 
     def test_fallback_configuration_fetching
@@ -60,15 +66,19 @@ module Jekyll
           }
         }
       }
-      expected_id = 'GTM-NNNNNNN'
-      assert_equal(expected_id, @gtm_tag.container_id(config))
+
+      actual_id = @gtm_tag.container_id(config)
+
+      assert_equal('GTM-NNNNNNN', actual_id)
     end
 
     def test_empty_configuration_fetching
       config = {}
-      expected_id = 'GTM-NNNNNNN'
-      assert_equal(expected_id, @gtm_tag.container_id(config))
-      assert_includes(Jekyll.logger.messages, 'Using fallback: GTM-NNNNNNN ')
+
+      actual_id = @gtm_tag.container_id(config)
+
+      assert_equal('GTM-NNNNNNN', actual_id)
+      assert_includes(Jekyll.logger.messages, /Using fallback: GTM-NNNNNNN/)
     end
 
     def test_it_renders_head_tag_properly
@@ -97,7 +107,7 @@ module Jekyll
 
       tag.render!(context)
 
-      assert_includes(Jekyll.logger.messages, 'Using fallback: GTM-NNNNNNN ')
+      assert_includes(Jekyll.logger.messages, /Using fallback: GTM-NNNNNNN/)
     end
 
     def test_it_gracefully_handles_invalid_text

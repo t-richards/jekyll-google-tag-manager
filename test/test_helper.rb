@@ -20,6 +20,10 @@ require 'jekyll-google-tag-manager'
 require 'minitest/autorun'
 require 'minitest/rg'
 
+# Run mutation testing with:
+# bin/mutant --include lib --require 'jekyll-google-tag-manager' --use minitest -- 'Jekyll::GoogleTagManager'
+require 'mutant/minitest/coverage'
+
 Jekyll.logger = Logger.new(StringIO.new)
 
 def make_site

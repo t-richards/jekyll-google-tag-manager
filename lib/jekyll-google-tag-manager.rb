@@ -58,9 +58,11 @@ module Jekyll
       return if @@warning_shown
 
       @@warning_shown = true
-      Jekyll.logger.warn('[WARNING]: jekyll-google-tag-manager')
-      Jekyll.logger.warn('Your GTM container id is malformed or missing.')
-      Jekyll.logger.warn("Using fallback: #{PLACEHOLDER_ID}")
+      Jekyll.logger.warn(<<~WARNING)
+        [WARNING]: jekyll-google-tag-manager
+        Your GTM container id is malformed or missing.
+        Jekyll.logger.warn("Using fallback: #{PLACEHOLDER_ID}
+      WARNING
     end
 
     def payload
