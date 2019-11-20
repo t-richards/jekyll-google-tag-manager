@@ -6,7 +6,7 @@ include Liquid
 
 RSpec.describe Jekyll::GoogleTagManager do
   let(:gtm_tag) do
-    @gtm_tag = Jekyll::GoogleTagManager.parse(
+    described_class.parse(
       'gtm',
       'body',
       Tokenizer.new(''),
@@ -37,7 +37,7 @@ RSpec.describe Jekyll::GoogleTagManager, '#template_path' do
   end
 
   it 'produces the correct path for the head' do
-    gtm_tag = Jekyll::GoogleTagManager.parse(
+    gtm_tag = described_class.parse(
       'gtm',
       'head',
       Tokenizer.new(''),
@@ -50,7 +50,7 @@ end
 
 RSpec.describe Jekyll::GoogleTagManager, '#container_id' do
   let(:gtm_tag) do
-    @gtm_tag = Jekyll::GoogleTagManager.parse(
+    described_class.parse(
       'gtm',
       'body',
       Tokenizer.new(''),
@@ -58,7 +58,7 @@ RSpec.describe Jekyll::GoogleTagManager, '#container_id' do
     )
   end
 
-  it 'fetches normal configuration' do
+  context 'with good config' do
     config = {
       'google' => {
         'tag_manager' => {
@@ -67,12 +67,12 @@ RSpec.describe Jekyll::GoogleTagManager, '#container_id' do
       }
     }
 
-    actual_id = gtm_tag.container_id(config)
-
-    expect(actual_id).to eq('correct')
+    it 'fetches the container id' do
+      expect(gtm_tag.container_id(config)).to eq('correct')
+    end
   end
 
-  it 'falls back to the placeholder id' do
+  context 'with bad config' do
     config = {
       'google' => {
         'tag_manager' => {
@@ -81,24 +81,52 @@ RSpec.describe Jekyll::GoogleTagManager, '#container_id' do
       }
     }
 
-    actual_id = gtm_tag.container_id(config)
-
-    expect(actual_id).to eq('GTM-NNNNNNN')
+    it 'falls back to the placeholder id' do
+      expect(gtm_tag.container_id(config)).to eq('GTM-NNNNNNN')
+    end
   end
 
-  it 'handles empty configuration' do
+  context 'with an incorrect config type' do
+    config = []
+
+    it 'uses the fallback id' do
+      expect(gtm_tag.container_id(config)).to eq('GTM-NNNNNNN')
+    end
+
+    it 'produces a warning' do
+      gtm_tag.container_id(config)
+
+      expect(Jekyll.logger.messages).to match(array_including(/Using fallback: GTM-NNNNNNN/))
+    end
+  end
+
+  context 'with an empty configuration' do
     config = {}
 
-    actual_id = gtm_tag.container_id(config)
+    it 'uses the fallback id' do
+      expect(gtm_tag.container_id(config)).to eq('GTM-NNNNNNN')
+    end
 
-    expect(actual_id).to eq('GTM-NNNNNNN')
-    expect(Jekyll.logger.messages).to match(array_including(/Using fallback: GTM-NNNNNNN/))
+    it 'produces a warning' do
+      gtm_tag.container_id(config)
+
+      expect(Jekyll.logger.messages).to match(array_including(/Using fallback: GTM-NNNNNNN/))
+    end
+  end
+
+  it 'only shows the warning once' do
+    config = {}
+
+    gtm_tag.container_id(config)
+
+    expect(Jekyll.logger.messages.first).to start_with('[WARNING]')
+    expect(Jekyll.logger.messages.length).to eq(1)
   end
 end
 
 RSpec.describe Jekyll::GoogleTagManager, '#render' do
   let(:gtm_tag) do
-    @gtm_tag = Jekyll::GoogleTagManager.parse(
+    described_class.parse(
       'gtm',
       'body',
       Tokenizer.new(''),
@@ -145,11 +173,11 @@ RSpec.describe Jekyll::GoogleTagManager do
     it 'raises an error' do
       expect do
         Liquid::Template.parse('{% gtm foobar %}')
-      end.to raise_error(Jekyll::GoogleTagManager::InvalidSectionError)
+      end.to raise_error(Jekyll::GoogleTagManager::InvalidSectionError, /Please specify one of the following sections/)
     end
   end
 
   it 'has the proper superclass' do
-    expect(Jekyll::GoogleTagManager.superclass).to eq(Liquid::Tag)
+    expect(described_class.superclass).to eq(Liquid::Tag)
   end
 end
