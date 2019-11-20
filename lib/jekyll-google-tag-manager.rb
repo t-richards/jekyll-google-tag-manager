@@ -27,7 +27,7 @@ module Jekyll
 
     def render(context)
       @context = context
-      template.render!(payload, info)
+      template.render!(payload)
     end
 
     def template
@@ -71,8 +71,6 @@ module Jekyll
       end
     end
 
-    protected
-
     def payload
       {
         'container_id' => container_id(context.registers[:site].config),
@@ -83,13 +81,6 @@ module Jekyll
     def options
       {
         'version' => VERSION
-      }
-    end
-
-    def info
-      {
-        registers: context.registers,
-        filters: [Jekyll::Filters]
       }
     end
   end

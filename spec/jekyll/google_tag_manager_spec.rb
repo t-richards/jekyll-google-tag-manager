@@ -13,7 +13,7 @@ RSpec.describe Jekyll::GoogleTagManager do
   end
 
   before(:each) do
-    described_class.class_variable_set(:@@warning_shown, false)
+    described_class.class_variable_set(:@@warning_shown, nil)
   end
 
   context 'gem things' do
@@ -157,6 +157,12 @@ RSpec.describe Jekyll::GoogleTagManager do
 
         expect(Jekyll.logger.messages).to match(array_including(/Using fallback: GTM-NNNNNNN/))
       end
+    end
+  end
+
+  describe '#options' do
+    it 'has a version' do
+      expect(gtm_tag.options).to eq('version' => '1.0.3')
     end
   end
 
