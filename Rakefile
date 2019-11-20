@@ -13,7 +13,7 @@ end
 namespace :test do
   desc 'Run mutation testing'
   task :mutant do
-    sh %q{bin/mutant --include lib --require 'jekyll-google-tag-manager' --use minitest -- 'Jekyll::GoogleTagManager'}
+    sh "bin/mutant --include lib --require 'jekyll-google-tag-manager' --use rspec -- 'Jekyll::GoogleTagManager'"
   end
 end
 

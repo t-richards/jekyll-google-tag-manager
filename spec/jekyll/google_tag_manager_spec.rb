@@ -1,0 +1,155 @@
+# frozen_string_literal: true
+
+require 'spec_helper'
+
+include Liquid
+
+RSpec.describe Jekyll::GoogleTagManager do
+  let(:gtm_tag) do
+    @gtm_tag = Jekyll::GoogleTagManager.parse(
+      'gtm',
+      'body',
+      Tokenizer.new(''),
+      ParseContext.new
+    )
+  end
+
+  before(:each) do
+    Jekyll.logger.messages.clear
+    Liquid::Template.error_mode = :strict
+  end
+
+  it 'has a version number' do
+    expect(::Jekyll::GoogleTagManager::VERSION).to_not be_nil
+  end
+end
+
+RSpec.describe Jekyll::GoogleTagManager, '#template_path' do
+  it 'produces the correct path for the body' do
+    gtm_tag = Jekyll::GoogleTagManager.parse(
+      'gtm',
+      'body',
+      Tokenizer.new(''),
+      ParseContext.new
+    )
+
+    expect(gtm_tag.template_path).to end_with('lib/template-body.html')
+  end
+
+  it 'produces the correct path for the head' do
+    gtm_tag = Jekyll::GoogleTagManager.parse(
+      'gtm',
+      'head',
+      Tokenizer.new(''),
+      ParseContext.new
+    )
+
+    expect(gtm_tag.template_path).to end_with('lib/template-head.html')
+  end
+end
+
+RSpec.describe Jekyll::GoogleTagManager, '#container_id' do
+  let(:gtm_tag) do
+    @gtm_tag = Jekyll::GoogleTagManager.parse(
+      'gtm',
+      'body',
+      Tokenizer.new(''),
+      ParseContext.new
+    )
+  end
+
+  it 'fetches normal configuration' do
+    config = {
+      'google' => {
+        'tag_manager' => {
+          'container_id' => 'correct'
+        }
+      }
+    }
+
+    actual_id = gtm_tag.container_id(config)
+
+    expect(actual_id).to eq('correct')
+  end
+
+  it 'falls back to the placeholder id' do
+    config = {
+      'google' => {
+        'tag_manager' => {
+          'false_container_thing' => 'derp'
+        }
+      }
+    }
+
+    actual_id = gtm_tag.container_id(config)
+
+    expect(actual_id).to eq('GTM-NNNNNNN')
+  end
+
+  it 'handles empty configuration' do
+    config = {}
+
+    actual_id = gtm_tag.container_id(config)
+
+    expect(actual_id).to eq('GTM-NNNNNNN')
+    expect(Jekyll.logger.messages).to match(array_including(/Using fallback: GTM-NNNNNNN/))
+  end
+end
+
+RSpec.describe Jekyll::GoogleTagManager, '#render' do
+  let(:gtm_tag) do
+    @gtm_tag = Jekyll::GoogleTagManager.parse(
+      'gtm',
+      'body',
+      Tokenizer.new(''),
+      ParseContext.new
+    )
+  end
+
+  context 'with good liquid context' do
+    let(:context) { make_context }
+
+    it 'renders the head tag properly' do
+      tag = Liquid::Template.parse('{% gtm head %}')
+
+      output = tag.render!(context)
+
+      expect(output).to include('script')
+      expect(output).to include('gtm.js')
+    end
+
+    it 'renders the head tag properly' do
+      tag = Liquid::Template.parse('{% gtm body %}')
+
+      output = tag.render!(context)
+
+      expect(output).to include('iframe')
+      expect(output).to include('ns.html')
+    end
+  end
+
+  context 'with bad liquid context' do
+    let(:context) { make_bad_context }
+    it 'handles the malformed config gracefully' do
+      tag = Liquid::Template.parse('{% gtm body %}')
+
+      tag.render!(context)
+
+      expect(Jekyll.logger.messages).to match(array_including(/Using fallback: GTM-NNNNNNN/))
+    end
+  end
+end
+
+RSpec.describe Jekyll::GoogleTagManager do
+  context 'when given an invalid section' do
+    it 'raises an error' do
+      expect do
+        Liquid::Template.parse('{% gtm foobar %}')
+      end.to raise_error(Jekyll::GoogleTagManager::InvalidSectionError)
+    end
+  end
+
+  it 'has the proper superclass' do
+    expect(Jekyll::GoogleTagManager.superclass).to eq(Liquid::Tag)
+  end
+end

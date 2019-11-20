@@ -27,12 +27,11 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'bundler', '~> 2.0'
   spec.add_development_dependency 'codecov', '~> 0.1'
   spec.add_development_dependency 'irb', '~> 1.0'
-  spec.add_development_dependency 'minitest', '~> 5.0'
-  spec.add_development_dependency 'minitest-rg', '~> 5.2'
+  spec.add_development_dependency 'mutant-rspec', '~> 0.8.24'
   spec.add_development_dependency 'rake', '~> 13.0'
+  spec.add_development_dependency 'rspec'
   spec.add_development_dependency 'rubocop'
   spec.add_development_dependency 'simplecov', '~> 0.16'
-  spec.add_development_dependency 'mutant-minitest', '~> 0.8.24'
 
   spec.add_dependency 'jekyll', '>= 3.3', '< 5.0'
 end
