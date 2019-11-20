@@ -54,7 +54,7 @@ module Jekyll
       Jekyll.logger.warn(<<~WARNING)
         [WARNING]: jekyll-google-tag-manager
           Your GTM container id is malformed or missing.
-          Jekyll.logger.warn("Using fallback: #{PLACEHOLDER_ID}
+          Using fallback: #{PLACEHOLDER_ID}
       WARNING
     end
 
@@ -73,13 +73,9 @@ module Jekyll
     def payload
       {
         'container_id' => container_id(context.registers[:site].config),
-        'gtm_tag' => options
-      }
-    end
-
-    def options
-      {
-        'version' => VERSION
+        'gtm_tag' => {
+          'version' => VERSION
+        }
       }
     end
   end

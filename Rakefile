@@ -12,7 +12,6 @@ task :mutant do
     --include lib
     --require jekyll-google-tag-manager
     --use rspec
-    --fail-fast
     --
     Jekyll::GoogleTagManager
   ].join(' ')

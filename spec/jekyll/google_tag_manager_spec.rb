@@ -87,9 +87,16 @@ RSpec.describe Jekyll::GoogleTagManager do
       end
 
       it 'produces a warning' do
+        expected_warning = <<~WARNING
+          [WARNING]: jekyll-google-tag-manager
+            Your GTM container id is malformed or missing.
+            Using fallback: GTM-NNNNNNN
+        WARNING
+        expected_warning += ' '
+
         gtm_tag.container_id(config)
 
-        expect(Jekyll.logger.messages).to match(array_including(/Using fallback: GTM-NNNNNNN/))
+        expect(Jekyll.logger.messages.first).to eq(expected_warning)
       end
     end
 
@@ -160,21 +167,31 @@ RSpec.describe Jekyll::GoogleTagManager do
     end
   end
 
-  describe '#options' do
-    it 'has a version' do
-      expect(gtm_tag.options).to eq('version' => '1.0.3')
+  describe '#payload' do
+    let(:context) { make_context }
+
+    it 'has desired properties' do
+      allow(gtm_tag).to receive(:context).and_return(context)
+
+      expect(gtm_tag.payload).to eq(
+        'container_id' => 'GTM-NNNNNNN',
+        'gtm_tag' => {
+          'version' => '1.0.3'
+        }
+      )
     end
   end
 
   context 'when given an invalid section' do
     it 'raises an error' do
-      msg = <<~MSG
+      section_msg = <<~MSG
         Invalid section specified: foobar.
         Please specify one of the following sections: body, head
       MSG
+
       expect do
         Liquid::Template.parse('{% gtm foobar %}')
-      end.to raise_error(Jekyll::GoogleTagManager::InvalidSectionError, msg)
+      end.to raise_error(Jekyll::GoogleTagManager::InvalidSectionError, section_msg)
     end
   end
 end
