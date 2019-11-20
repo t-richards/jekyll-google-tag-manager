@@ -14,10 +14,23 @@ if ENV['CI'] == 'true'
   SimpleCov.formatters = SimpleCov::Formatter::MultiFormatter.new(formatters)
 end
 
+require 'rspec'
+
+RSpec.configure do |config|
+  config.disable_monkey_patching!
+  config.order = :random
+
+  config.before(:suite) do
+    Liquid::Template.error_mode = :strict
+  end
+
+  config.before(:each) do
+    Jekyll.logger.messages.clear
+  end
+end
+
 require 'jekyll'
 require 'jekyll-google-tag-manager'
-
-require 'rspec'
 
 Jekyll.logger = Logger.new(StringIO.new)
 
