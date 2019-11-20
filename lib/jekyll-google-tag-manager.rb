@@ -16,11 +16,10 @@ module Jekyll
     @@warning_shown = false
 
     def initialize(_tag_name, text, _tokens)
-      super
       @text = text.strip
       message = <<~MSG
         Invalid section specified: #{@text}.
-        Please specify one of the following sections: #{VALID_SECTIONS.join(',')}
+        Please specify one of the following sections: #{VALID_SECTIONS.join(', ')}
       MSG
       raise InvalidSectionError, message unless VALID_SECTIONS.include?(@text)
     end

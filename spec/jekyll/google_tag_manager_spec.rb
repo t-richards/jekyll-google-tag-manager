@@ -168,9 +168,13 @@ RSpec.describe Jekyll::GoogleTagManager do
 
   context 'when given an invalid section' do
     it 'raises an error' do
+      msg = <<~MSG
+        Invalid section specified: foobar.
+        Please specify one of the following sections: body, head
+      MSG
       expect do
         Liquid::Template.parse('{% gtm foobar %}')
-      end.to raise_error(Jekyll::GoogleTagManager::InvalidSectionError, /Please specify one of the following sections/)
+      end.to raise_error(Jekyll::GoogleTagManager::InvalidSectionError, msg)
     end
   end
 end
