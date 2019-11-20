@@ -12,6 +12,10 @@ RSpec.describe Jekyll::GoogleTagManager do
     )
   end
 
+  before(:each) do
+    described_class.class_variable_set(:@@warning_shown, false)
+  end
+
   context 'gem things' do
     it 'has a version number' do
       expect(::Jekyll::GoogleTagManager::VERSION).to_not be_nil
@@ -104,13 +108,19 @@ RSpec.describe Jekyll::GoogleTagManager do
     end
 
     it 'only shows the warning once' do
+      tag2 = described_class.parse(
+        'gtm',
+        'body',
+        Liquid::Tokenizer.new(''),
+        Liquid::ParseContext.new
+      )
       config = {}
 
       gtm_tag.container_id(config)
-      gtm_tag.container_id(config)
+      tag2.container_id(config)
 
-      expect(Jekyll.logger.messages.first).to start_with('[WARNING]')
       expect(Jekyll.logger.messages.length).to eq(1)
+      expect(Jekyll.logger.messages.first).to start_with('[WARNING]')
     end
   end
 
