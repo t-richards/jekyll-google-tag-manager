@@ -66,17 +66,23 @@ module Jekyll
 
     def template_path
       @template_path ||= begin
-        File.expand_path("./template-#{@text}.html", File.dirname(__FILE__))
+        File.expand_path("./template-#{@text}.html", this_file_dirname)
       end
     end
 
     def payload
       {
-        'container_id' => container_id(context.registers[:site].config),
+        'container_id' => container_id(context.registers.fetch(:site).config),
         'gtm_tag' => {
           'version' => VERSION
         }
       }
+    end
+
+    private
+
+    def this_file_dirname
+      File.dirname(__FILE__)
     end
   end
 end

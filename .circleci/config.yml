@@ -42,7 +42,11 @@ jobs:
 
       - run:
           name: Run tests
-          command: bin/rake test
+          command: bin/rspec
+
+      - run:
+          name: Run mutation tests
+          command: bin/rake mutation
 
       - run:
           name: Lint code
