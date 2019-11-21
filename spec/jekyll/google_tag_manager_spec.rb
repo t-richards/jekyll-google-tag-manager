@@ -183,6 +183,12 @@ RSpec.describe Jekyll::GoogleTagManager do
   end
 
   describe '#initialize' do
+    context 'when given a valid section' do
+      it 'can be parsed' do
+        Liquid::Template.parse('{% gtm head %}')
+      end
+    end
+
     context 'when given an invalid section' do
       it 'raises an error' do
         section_msg = <<~MSG
