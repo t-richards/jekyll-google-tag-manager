@@ -8,6 +8,8 @@ AllCops:
   Exclude:
     - bin/rake
     - bin/rubocop
+    - bin/mutant
+    - bin/rspec
     - 'vendor/**/*'
 
 Naming/FileName:
@@ -17,3 +19,11 @@ Naming/FileName:
 Style/ClassVars:
   Exclude:
     - 'lib/jekyll-google-tag-manager.rb'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+
+Metrics/LineLength:
+  Exclude:
+    - 'spec/**/*'

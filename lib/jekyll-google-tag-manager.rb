@@ -16,65 +16,46 @@ module Jekyll
     @@warning_shown = false
 
     def initialize(_tag_name, text, _tokens)
-      super
       @text = text.strip
       message = <<~MSG
         Invalid section specified: #{@text}.
-        Please specify one of the following sections: #{VALID_SECTIONS.join(',')}
+        Please specify one of the following sections: #{VALID_SECTIONS.join(', ')}
       MSG
       raise InvalidSectionError, message unless VALID_SECTIONS.include?(@text)
     end
 
     def render(context)
       @context = context
-      template.render!(payload, info)
+      template.render!(payload)
     end
 
     def template
-      @template ||= Liquid::Template.parse template_contents
-    end
-
-    def options
-      {
-        'version' => Jekyll::GoogleTagManager::VERSION
-      }
+      @template ||= Liquid::Template.parse(template_contents)
     end
 
     def container_id(config)
       gtm_container_id = config.dig('google', 'tag_manager', 'container_id')
-
-      if gtm_container_id.nil?
-        warn_bad_config!
-        return PLACEHOLDER_ID
-      end
+      return fallback if gtm_container_id.nil?
 
       gtm_container_id
     rescue TypeError
-      warn_bad_config!
+      fallback
+    end
+
+    def fallback
+      produce_warning!
       PLACEHOLDER_ID
     end
 
-    def warn_bad_config!
+    def produce_warning!
       return if @@warning_shown
 
       @@warning_shown = true
-      Jekyll.logger.warn('[WARNING]: jekyll-google-tag-manager')
-      Jekyll.logger.warn('Your GTM container id is malformed or missing.')
-      Jekyll.logger.warn("Using fallback: #{PLACEHOLDER_ID}")
-    end
-
-    def payload
-      {
-        'container_id' => container_id(context.registers[:site].config),
-        'gtm_tag' => options
-      }
-    end
-
-    def info
-      {
-        registers: context.registers,
-        filters: [Jekyll::Filters]
-      }
+      Jekyll.logger.warn(<<~WARNING)
+        [WARNING]: jekyll-google-tag-manager
+          Your GTM container id is malformed or missing.
+          Using fallback: #{PLACEHOLDER_ID}
+      WARNING
     end
 
     def template_contents
@@ -85,8 +66,23 @@ module Jekyll
 
     def template_path
       @template_path ||= begin
-        File.expand_path("./template-#{@text}.html", File.dirname(__FILE__))
+        File.expand_path("./template-#{@text}.html", this_file_dirname)
       end
+    end
+
+    def payload
+      {
+        'container_id' => container_id(context.registers.fetch(:site).config),
+        'gtm_tag' => {
+          'version' => VERSION
+        }
+      }
+    end
+
+    private
+
+    def this_file_dirname
+      File.dirname(__FILE__)
     end
   end
 end
