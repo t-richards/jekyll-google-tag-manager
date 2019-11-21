@@ -18,7 +18,7 @@ RSpec.describe Jekyll::GoogleTagManager do
 
   context 'gem things' do
     it 'has a version number' do
-      expect(::Jekyll::GoogleTagManager::VERSION).to_not be_nil
+      expect(described_class::VERSION).to_not be_nil
     end
 
     it 'has the proper superclass' do
