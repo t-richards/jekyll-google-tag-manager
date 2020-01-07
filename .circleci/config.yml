@@ -45,10 +45,6 @@ jobs:
           command: bin/rspec
 
       - run:
-          name: Run mutation tests
-          command: bin/rake mutation
-
-      - run:
           name: Lint code
           command: bin/rubocop
 
