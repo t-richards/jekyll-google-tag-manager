@@ -8,6 +8,7 @@ AllCops:
   Exclude:
     - bin/rake
     - bin/rubocop
+    - bin/mutant
     - bin/rspec
     - 'vendor/**/*'
 
