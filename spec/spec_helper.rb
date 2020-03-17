@@ -3,7 +3,9 @@
 $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
 
 require 'simplecov'
-SimpleCov.start
+SimpleCov.start do
+  enable_coverage :branch
+end
 
 if ENV['CI'] == 'true'
   require 'codecov'
