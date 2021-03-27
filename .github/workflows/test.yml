@@ -36,7 +36,7 @@ jobs:
           BUNDLE_JOBS: 2
           BUNDLE_RETRY: 2
           BUNDLE_DEPLOYMENT: true
-        run: bundle check || bundle install
+        run: bundle install
 
       - name: Run specs
         run: bin/rspec
