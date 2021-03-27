@@ -35,7 +35,7 @@ jobs:
         env:
           BUNDLE_JOBS: 2
           BUNDLE_RETRY: 2
-          BUNDLE_DEPLOYMENT: true
+          BUNDLE_PATH: vendor/bundle
         run: bundle install
 
       - name: Run specs
