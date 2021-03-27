@@ -4,13 +4,13 @@ on: [push]
 jobs:
   test:
     if: "!contains(github.event.commits[0].message, '[ci skip]')"
-    name: Ruby ${{ matrix.ruby }}
+    name: Ruby ${{ matrix.ruby-version }}
     runs-on: ubuntu-latest
     env:
       PARALLEL_PROCESSOR_COUNT: 2
     strategy:
       matrix:
-        ruby: [ '2.5', '2.6', '2.7', '3.0' ]
+        ruby-version: ['2.5', '2.6', '2.7', '3.0']
     steps:
       - name: Checkout source
         uses: actions/checkout@v2
@@ -18,7 +18,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: ${{ matrix.ruby }}
+          ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true
 
       - name: Ruby version
