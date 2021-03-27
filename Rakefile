@@ -8,7 +8,7 @@ RSpec::Core::RakeTask.new(:spec)
 desc 'Run mutation testing'
 task :mutation do
   sh %w[
-    bin/mutant
+    bin/mutant run
     --include lib
     --require jekyll-google-tag-manager
     --use rspec

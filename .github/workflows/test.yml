@@ -1,0 +1,54 @@
+name: Test
+on: [push]
+
+jobs:
+  test:
+    if: "!contains(github.event.commits[0].message, '[ci skip]')"
+    name: Ruby ${{ matrix.ruby }}
+    runs-on: ubuntu-latest
+    env:
+      PARALLEL_PROCESSOR_COUNT: 2
+    strategy:
+      matrix:
+        ruby: [ '2.5', '2.6', '2.7', '3.0' ]
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+
+      - name: Ruby version
+        run: ruby -v
+
+      - name: Bundler environment
+        run: bundle env
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('*.gemspec') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+
+      - name: Run specs
+        run: bin/rspec
+
+      - name: Run mutation tests
+        run: bin/rake mutation
+
+      - name: Lint code
+        run: bin/rubocop --parallel
+
+      - name: Build gem
+        run: bin/rake build
+
+      - name: Inspect gem contents
+        run: |
+          cd pkg
+          tar xf *.gem
+          tar tvf data.tar.gz

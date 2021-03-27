@@ -1,5 +1,10 @@
+require:
+  - rubocop-rake
+
 AllCops:
-  TargetRubyVersion: 2.3
+  TargetRubyVersion: 2.5
+  NewCops: enable
+  SuggestExtensions: false
   Include:
     - '*.gemspec'
     - '**/*.rb'
@@ -12,13 +17,8 @@ AllCops:
     - bin/rspec
     - 'vendor/**/*'
 
-Naming/FileName:
-  Exclude:
-    - 'lib/jekyll-google-tag-manager.rb'
-
-Style/ClassVars:
-  Exclude:
-    - 'lib/jekyll-google-tag-manager.rb'
+Lint/EmptyClass:
+  Enabled: false
 
 Metrics/BlockLength:
   Exclude:
@@ -27,3 +27,10 @@ Metrics/BlockLength:
 Metrics/LineLength:
   Exclude:
     - 'spec/**/*'
+
+Naming/FileName:
+  Exclude:
+    - 'lib/jekyll-google-tag-manager.rb'
+
+Style/ClassVars:
+  Enabled: false

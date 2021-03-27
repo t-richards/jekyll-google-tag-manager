@@ -26,7 +26,7 @@ RSpec.configure do |config|
     Liquid::Template.error_mode = :strict
   end
 
-  config.before(:each) do
+  config.before do
     Jekyll.logger.messages.clear
   end
 end
