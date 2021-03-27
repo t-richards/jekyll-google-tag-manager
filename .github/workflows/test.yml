@@ -2,17 +2,15 @@ name: Test
 on: [push]
 
 jobs:
-  build_and_lint:
+  test:
+    if: "!contains(github.event.commits[0].message, '[ci skip]')"
+    name: Ruby ${{ matrix.ruby }}
     runs-on: ubuntu-latest
     env:
-      BUNDLE_JOBS: 2
-      BUNDLE_RETRY: 2
-      BUNDLE_PATH: vendor/bundle
       PARALLEL_PROCESSOR_COUNT: 2
     strategy:
       matrix:
         ruby: [ '2.5', '2.6', '2.7', '3.0' ]
-    name: Ruby ${{ matrix.ruby }}
     steps:
       - name: Checkout source
         uses: actions/checkout@v2
@@ -21,6 +19,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
 
       - name: Ruby version
         run: ruby -v
@@ -32,12 +31,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: vendor/bundle
-          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile') }}
+          key: ${{ runner.os }}-gems-${{ hashFiles('*.gemspec') }}
           restore-keys: |
             ${{ runner.os }}-gems-
-
-      - name: Install Ruby dependencies
-        run: bundle install
 
       - name: Run specs
         run: bin/rspec
