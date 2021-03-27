@@ -1,0 +1,59 @@
+name: Test
+on: [push]
+
+jobs:
+  build_and_lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby: [ '2.4', '2.5', '2.6', '2.7', '3.0' ]
+    name: Ruby ${{ matrix.ruby }} sample
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+
+      - name: Ruby version
+        run: ruby -v
+
+      - name: Bundler environment
+        run: bundle env
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+
+      - name: Install Ruby dependencies
+        env:
+          BUNDLE_JOBS: 2
+          BUNDLE_RETRY: 2
+          BUNDLE_DEPLOYMENT: true
+        run: bundle check || bundle install
+
+      - name: Run specs
+        run: bin/rspec
+
+      - name: Run mutation tests
+        run: bin/rake mutation
+
+      - name: Lint code
+        env:
+          PARALLEL_PROCESSOR_COUNT: 2
+        run: bin/rubocop --parallel
+
+      - name: Build gem
+        run: bin/rake build
+
+      - name: Inspect gem contents
+        run: |
+          cd pkg
+          tar xf *.gem
+          tar tvf data.tar.gz

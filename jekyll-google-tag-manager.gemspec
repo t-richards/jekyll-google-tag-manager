@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-lib = File.expand_path('lib', __dir__)
-$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'jekyll-google-tag-manager/version'
+require_relative 'lib/jekyll-google-tag-manager/version'
 
 Gem::Specification.new do |spec|
   spec.name = 'jekyll-google-tag-manager'
@@ -10,9 +8,7 @@ Gem::Specification.new do |spec|
   spec.authors = ['Tom Richards']
   spec.email = ['tom@tomrichards.net']
 
-  spec.summary = <<~SUMMARY
-    A Jekyll plugin to add Google Tag Manager snippets to your site.
-  SUMMARY
+  spec.summary = 'A Jekyll plugin to add Google Tag Manager snippets to your site'
   spec.homepage = 'https://github.com/t-richards/jekyll-google-tag-manager'
   spec.license = 'MIT'
 
@@ -21,16 +17,16 @@ Gem::Specification.new do |spec|
   spec.extra_rdoc_files = %w[README.md LICENSE]
   spec.require_paths = ['lib']
 
-  # Require Ruby 2.3 for Hash#dig and squiggly heredoc
-  spec.required_ruby_version = '>= 2.3.1'
+  spec.required_ruby_version = '>= 2.4.0'
 
   spec.add_development_dependency 'bundler', '~> 2.0'
   spec.add_development_dependency 'codecov', '~> 0.1'
   spec.add_development_dependency 'irb', '~> 1.0'
-  spec.add_development_dependency 'mutant-rspec', '~> 0.9.4'
+  spec.add_development_dependency 'mutant-rspec', '~> 0.10'
   spec.add_development_dependency 'rake', '~> 13.0'
   spec.add_development_dependency 'rspec'
   spec.add_development_dependency 'rubocop'
+  spec.add_development_dependency 'rubocop-rake'
   spec.add_development_dependency 'simplecov', '~> 0.16'
 
   spec.add_dependency 'jekyll', '>= 3.3', '< 5.0'

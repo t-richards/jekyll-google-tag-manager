@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'jekyll-google-tag-manager/version'
 require 'jekyll-google-tag-manager/errors'
+require 'jekyll-google-tag-manager/version'
 require 'liquid'
 
 # Add our tag to the Jekyll top-level module
@@ -15,18 +15,22 @@ module Jekyll
 
     @@warning_shown = false
 
-    def initialize(_tag_name, text, _tokens)
-      @text = text.strip
+    def initialize(_tag_name, _markup, _parse_context)
+      super
       message = <<~MSG
-        Invalid section specified: #{@text}.
+        Invalid section specified: #{section}.
         Please specify one of the following sections: #{VALID_SECTIONS.join(', ')}
       MSG
-      raise InvalidSectionError, message unless VALID_SECTIONS.include?(@text)
+      raise InvalidSectionError, message unless VALID_SECTIONS.include?(section)
     end
 
     def render(context)
       @context = context
       template.render!(payload)
+    end
+
+    def section
+      @section ||= @markup.strip
     end
 
     def template
@@ -59,15 +63,11 @@ module Jekyll
     end
 
     def template_contents
-      @template_contents ||= begin
-        File.read(template_path)
-      end
+      @template_contents ||= File.read(template_path)
     end
 
     def template_path
-      @template_path ||= begin
-        File.expand_path("./template-#{@text}.html", this_file_dirname)
-      end
+      @template_path ||= File.expand_path("./template-#{section}.html", this_file_dirname)
     end
 
     def payload

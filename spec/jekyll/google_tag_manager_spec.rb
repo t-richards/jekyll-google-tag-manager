@@ -12,13 +12,13 @@ RSpec.describe Jekyll::GoogleTagManager do
     )
   end
 
-  before(:each) do
+  before do
     described_class.class_variable_set(:@@warning_shown, nil)
   end
 
-  context 'gem things' do
+  describe 'gem things' do
     it 'has a version number' do
-      expect(described_class::VERSION).to_not be_nil
+      expect(described_class::VERSION).not_to be_nil
     end
 
     it 'has the proper superclass' do
@@ -28,7 +28,7 @@ RSpec.describe Jekyll::GoogleTagManager do
 
   describe '#template_path' do
     it 'produces the correct path for the body' do
-      body_tag = Jekyll::GoogleTagManager.parse(
+      body_tag = described_class.parse(
         'gtm',
         'body',
         Liquid::Tokenizer.new(''),
