@@ -26,159 +26,105 @@ RSpec.describe Jekyll::GoogleTagManager do
     end
   end
 
-  describe '#template_path' do
-    it 'produces the correct path for the body' do
-      body_tag = described_class.parse(
-        'gtm',
-        'body',
-        Liquid::Tokenizer.new(''),
-        Liquid::ParseContext.new
-      )
-
-      expect(body_tag.template_path).to end_with('lib/template-body.html')
-    end
-
-    it 'produces the correct path for the head' do
-      head_tag = described_class.parse(
-        'gtm',
-        'head',
-        Liquid::Tokenizer.new(''),
-        Liquid::ParseContext.new
-      )
-
-      expect(head_tag.template_path).to end_with('lib/template-head.html')
-    end
-  end
-
-  describe '#container_id' do
-    context 'with good config' do
-      config = {
-        'google' => {
-          'tag_manager' => {
-            'container_id' => 'correct'
-          }
-        }
-      }
-
-      it 'fetches the container id' do
-        expect(gtm_tag.container_id(config)).to eq('correct')
-      end
-    end
-
-    context 'with bad config' do
-      config = {
-        'google' => {
-          'tag_manager' => {
-            'false_container_thing' => 'derp'
-          }
-        }
-      }
-
-      it 'falls back to the placeholder id' do
-        expect(gtm_tag.container_id(config)).to eq('GTM-NNNNNNN')
-      end
-    end
-
-    context 'with an incorrect config type' do
-      config = []
-
-      it 'uses the fallback id' do
-        expect(gtm_tag.container_id(config)).to eq('GTM-NNNNNNN')
-      end
-
-      it 'produces a warning' do
-        expected_warning = <<~WARNING
-          [WARNING]: jekyll-google-tag-manager
-            Your GTM container id is malformed or missing.
-            Using fallback: GTM-NNNNNNN
-        WARNING
-        expected_warning += ' '
-
-        gtm_tag.container_id(config)
-
-        expect(Jekyll.logger.messages.first).to eq(expected_warning)
-      end
-    end
-
-    context 'with an empty configuration' do
-      config = {}
-
-      it 'uses the fallback id' do
-        expect(gtm_tag.container_id(config)).to eq('GTM-NNNNNNN')
-      end
-
-      it 'produces a warning' do
-        gtm_tag.container_id(config)
-
-        expect(Jekyll.logger.messages).to match(array_including(/Using fallback: GTM-NNNNNNN/))
-      end
-    end
-
-    it 'only shows the warning once' do
-      tag2 = described_class.parse(
-        'gtm',
-        'body',
-        Liquid::Tokenizer.new(''),
-        Liquid::ParseContext.new
-      )
-      config = {}
-
-      gtm_tag.container_id(config)
-      tag2.container_id(config)
-
-      expect(Jekyll.logger.messages.length).to eq(1)
-      expect(Jekyll.logger.messages.first).to start_with('[WARNING]')
-    end
-  end
-
   describe '#render' do
-    context 'with good liquid context' do
-      let(:context) { make_context }
+    context 'with valid configuration' do
+      let(:context) do
+        make_context({ 'tag_manager' => { 'container_id' => 'GTM-1234567' } })
+      end
 
-      it 'renders the head tag properly' do
+      it 'renders the head tag with the specified id' do
         tag = Liquid::Template.parse('{% gtm head %}')
 
         output = tag.render!(context)
 
-        expect(output).to include('script')
-        expect(output).to include('gtm.js')
+        expect(output).to eq <<~HEAD
+          <!-- Begin Jekyll GTM tag v1.0.3 -->
+          <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-1234567');</script>
+          <!-- End Jekyll GTM tag v1.0.3 -->
+        HEAD
       end
 
-      it 'renders the head tag properly' do
+      it 'renders the body tag with the specified id' do
         tag = Liquid::Template.parse('{% gtm body %}')
 
         output = tag.render!(context)
 
-        expect(output).to include('iframe')
-        expect(output).to include('ns.html')
+        expect(output).to eq <<~BODY
+          <!-- Begin Jekyll GTM tag v1.0.3 (noscript) -->
+          <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-1234567"
+          height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+          <!-- End Jekyll GTM tag v1.0.3 (noscript) -->
+        BODY
       end
     end
 
-    context 'with bad liquid context' do
-      let(:context) { make_bad_context }
+    context 'with no configuration' do
+      let(:context) { make_context }
 
-      it 'handles the malformed config gracefully' do
+      it 'produces a warning' do
         tag = Liquid::Template.parse('{% gtm body %}')
 
         tag.render!(context)
 
         expect(Jekyll.logger.messages).to match(array_including(/Using fallback: GTM-NNNNNNN/))
       end
+
+      it 'renders with the fallback id' do
+        tag = Liquid::Template.parse('{% gtm body %}')
+
+        output = tag.render!(context)
+
+        expect(output).to eq <<~BODY
+          <!-- Begin Jekyll GTM tag v1.0.3 (noscript) -->
+          <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NNNNNNN"
+          height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+          <!-- End Jekyll GTM tag v1.0.3 (noscript) -->
+        BODY
+      end
     end
-  end
 
-  describe '#payload' do
-    let(:context) { make_context }
+    context 'with multiple tags and no config' do
+      let(:context) { make_context }
 
-    it 'has desired properties' do
-      allow(gtm_tag).to receive(:context).and_return(context)
+      it 'produces one warning' do
+        head_tag = Liquid::Template.parse('{% gtm head %}')
+        body_tag = Liquid::Template.parse('{% gtm body %}')
 
-      expect(gtm_tag.payload).to eq(
-        'container_id' => 'GTM-NNNNNNN',
-        'gtm_tag' => {
-          'version' => '1.0.3'
-        }
-      )
+        head_tag.render!(context)
+        body_tag.render!(context)
+
+        expect(Jekyll.logger.messages.length).to eq(2)
+        expect(Jekyll.logger.messages.last).to start_with('[WARNING]')
+      end
+    end
+
+    context 'with bad configuration' do
+      let(:context) { make_context(Object.new) }
+
+      it 'produces a warning' do
+        tag = Liquid::Template.parse('{% gtm body %}')
+
+        tag.render!(context)
+
+        expect(Jekyll.logger.messages).to match(array_including(/Using fallback: GTM-NNNNNNN/))
+      end
+
+      it 'renders with the fallback id' do
+        tag = Liquid::Template.parse('{% gtm body %}')
+
+        output = tag.render!(context)
+
+        expect(output).to eq <<~BODY
+          <!-- Begin Jekyll GTM tag v1.0.3 (noscript) -->
+          <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NNNNNNN"
+          height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+          <!-- End Jekyll GTM tag v1.0.3 (noscript) -->
+        BODY
+      end
     end
   end
 

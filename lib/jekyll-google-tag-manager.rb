@@ -29,13 +29,7 @@ module Jekyll
       template.render!(payload)
     end
 
-    def section
-      @section ||= @markup.strip
-    end
-
-    def template
-      @template ||= Liquid::Template.parse(template_contents)
-    end
+    private
 
     def container_id(config)
       gtm_container_id = config.dig('google', 'tag_manager', 'container_id')
@@ -62,14 +56,6 @@ module Jekyll
       WARNING
     end
 
-    def template_contents
-      @template_contents ||= File.read(template_path)
-    end
-
-    def template_path
-      @template_path ||= File.expand_path("./template-#{section}.html", this_file_dirname)
-    end
-
     def payload
       {
         'container_id' => container_id(context.registers.fetch(:site).config),
@@ -79,7 +65,21 @@ module Jekyll
       }
     end
 
-    private
+    def section
+      @section ||= @markup.strip
+    end
+
+    def template
+      @template ||= Liquid::Template.parse(template_contents)
+    end
+
+    def template_contents
+      @template_contents ||= File.read(template_path)
+    end
+
+    def template_path
+      @template_path ||= File.expand_path("./template-#{section}.html", this_file_dirname)
+    end
 
     def this_file_dirname
       File.dirname(__FILE__)

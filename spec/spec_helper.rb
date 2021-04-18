@@ -37,16 +37,11 @@ require 'jekyll-google-tag-manager'
 Jekyll.logger = Logger.new(StringIO.new)
 
 def make_site
-  config = Jekyll.configuration
-  Jekyll::Site.new(config)
+  Jekyll::Site.new(Jekyll.configuration)
 end
 
-def make_context
-  Liquid::Context.new({}, {}, site: make_site)
-end
-
-def make_bad_context
+def make_context(value = nil)
   site = make_site
-  site.config['google'] = Object.new
+  site.config['google'] = value
   Liquid::Context.new({}, {}, site: site)
 end
