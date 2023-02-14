@@ -10,6 +10,7 @@ module Jekyll
   class GoogleTagManager < Liquid::Tag
     attr_accessor :context
 
+    DEFAULT_TRANSPORT_URL = 'https://www.googletagmanager.com'
     PLACEHOLDER_ID = 'GTM-NNNNNNN'
     VALID_SECTIONS = %w[body head].freeze
 
@@ -45,6 +46,10 @@ module Jekyll
       PLACEHOLDER_ID
     end
 
+    def fallback_transport_url
+      DEFAULT_TRANSPORT_URL
+    end
+
     def produce_warning!
       return if @@warning_shown
 
@@ -61,7 +66,8 @@ module Jekyll
         'container_id' => container_id(context.registers.fetch(:site).config),
         'gtm_tag' => {
           'version' => VERSION
-        }
+        },
+        'transport_url' => transport_url(context.registers.fetch(:site).config)
       }
     end
 
@@ -83,6 +89,15 @@ module Jekyll
 
     def this_file_dirname
       File.dirname(__FILE__)
+    end
+
+    def transport_url(config)
+      gtm_transport_url = config.dig('google', 'tag_manager', 'transport_url')
+      return fallback_transport_url if gtm_transport_url.nil?
+
+      gtm_transport_url
+    rescue TypeError
+      fallback_transport_url
     end
   end
 end

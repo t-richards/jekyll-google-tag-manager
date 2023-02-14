@@ -24,12 +24,14 @@ $ bundle install
 
 ## Usage
 
-You must specify a single GTM container in your site's `_config.yml`.
+You must specify a single GTM container in your site's `_config.yml`. You can
+optionally include a transport URL if you are using a server side container.
 
 ```yaml
 google:
   tag_manager:
     container_id: GTM-NNNNNNN
+    transport_url: https://blah.com
 ```
 
 Add the following right after the opening of the `<head>` tag in your site template(s):

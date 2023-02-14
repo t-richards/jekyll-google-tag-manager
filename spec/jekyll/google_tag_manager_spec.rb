@@ -126,6 +126,28 @@ RSpec.describe Jekyll::GoogleTagManager do
         BODY
       end
     end
+
+    context 'with custom transport url' do
+      let(:context) do
+        make_context({ 'tag_manager' => { 'container_id' => 'GTM-1234567', 'transport_url' => 'https://blah.com' } })
+      end
+
+      it 'renders the head tag with the specified id and custom transport URL' do
+        tag = Liquid::Template.parse('{% gtm head %}')
+
+        output = tag.render!(context)
+
+        expect(output).to eq <<~HEAD
+          <!-- Begin Jekyll GTM tag v1.0.3 -->
+          <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://blah.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-1234567');</script>
+          <!-- End Jekyll GTM tag v1.0.3 -->
+        HEAD
+      end
+    end
   end
 
   describe '#initialize' do
