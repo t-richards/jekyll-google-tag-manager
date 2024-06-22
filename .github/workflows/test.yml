@@ -20,9 +20,7 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true
-
-      - name: Update rubygems
-        run: gem update --system
+          rubygems: latest
 
       - name: Ruby version
         run: ruby -v
@@ -32,6 +30,12 @@ jobs:
 
       - name: Run specs
         run: bin/rspec
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage/coverage.xml
 
       - name: Run mutation tests
         run: bin/rake mutation

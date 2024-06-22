@@ -6,7 +6,6 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'bundler'
-gem 'codecov'
 gem 'irb'
 gem 'mutant-rspec'
 gem 'rake'
@@ -14,3 +13,4 @@ gem 'rspec'
 gem 'rubocop'
 gem 'rubocop-rake'
 gem 'simplecov'
+gem 'simplecov-cobertura'
