@@ -2,18 +2,21 @@
 
 $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
 
-require 'simplecov'
-SimpleCov.start do
-  enable_coverage :branch
-end
+unless $PROGRAM_NAME == 'bin/mutant'
+  require 'simplecov'
+  require 'simplecov-cobertura'
 
-if ENV['CI'] == 'true'
-  require 'codecov'
-  formatters = [
-    SimpleCov::Formatter::HTMLFormatter,
-    SimpleCov::Formatter::Codecov
-  ]
-  SimpleCov.formatters = SimpleCov::Formatter::MultiFormatter.new(formatters)
+  SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(
+    [
+      SimpleCov::Formatter::HTMLFormatter,
+      SimpleCov::Formatter::CoberturaFormatter
+    ]
+  )
+
+  SimpleCov.start do
+    enable_coverage :branch
+    minimum_coverage line: 100, branch: 100
+  end
 end
 
 require 'rspec'
