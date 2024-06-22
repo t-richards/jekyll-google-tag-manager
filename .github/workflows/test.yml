@@ -21,6 +21,9 @@ jobs:
           ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true
 
+      - name: Update rubygems
+        run: gem update --system
+
       - name: Ruby version
         run: ruby -v
 
