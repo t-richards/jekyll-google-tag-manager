@@ -17,7 +17,7 @@ Gem::Specification.new do |spec|
   spec.extra_rdoc_files = %w[README.md LICENSE]
   spec.require_paths = ['lib']
 
-  spec.required_ruby_version = '>= 2.5.0'
+  spec.required_ruby_version = '>= 2.7.0'
   spec.metadata['rubygems_mfa_required'] = 'true'
 
   spec.add_dependency 'jekyll', '>= 3.3', '< 5.0'

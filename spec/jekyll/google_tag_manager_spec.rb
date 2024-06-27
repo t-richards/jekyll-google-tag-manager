@@ -131,11 +131,15 @@ RSpec.describe Jekyll::GoogleTagManager do
   describe '#initialize' do
     context 'when given a valid section' do
       it 'parses the head section' do
-        Liquid::Template.parse('{% gtm head %}')
+        tpl = Liquid::Template.parse('{% gtm head %}')
+
+        expect(tpl).to be_a(Liquid::Template)
       end
 
       it 'parses the body section' do
-        Liquid::Template.parse('{% gtm body %}')
+        tpl = Liquid::Template.parse('{% gtm body %}')
+
+        expect(tpl).to be_a(Liquid::Template)
       end
     end
 

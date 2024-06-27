@@ -1,10 +1,10 @@
 require:
   - rubocop-rake
+  - rubocop-rspec
 
 AllCops:
-  TargetRubyVersion: 2.5
+  TargetRubyVersion: 2.7
   NewCops: enable
-  SuggestExtensions: false
   Include:
     - '*.gemspec'
     - '**/*.rb'
@@ -33,4 +33,10 @@ Naming/FileName:
     - 'lib/jekyll-google-tag-manager.rb'
 
 Style/ClassVars:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/MultipleExpectations:
   Enabled: false
