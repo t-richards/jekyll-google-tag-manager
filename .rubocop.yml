@@ -1,6 +1,7 @@
-require:
+plugins:
   - rubocop-rake
   - rubocop-rspec
+  - rubocop-performance
 
 AllCops:
   TargetRubyVersion: 2.7
@@ -11,10 +12,10 @@ AllCops:
     - Gemfile
     - Rakefile
   Exclude:
-    - bin/rake
-    - bin/rubocop
     - bin/mutant
+    - bin/rake
     - bin/rspec
+    - bin/rubocop
     - 'vendor/**/*'
 
 Lint/EmptyClass:
