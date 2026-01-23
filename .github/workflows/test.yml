@@ -6,6 +6,8 @@ jobs:
     if: "!contains(github.event.commits[0].message, '[ci skip]')"
     name: Ruby ${{ matrix.ruby-version }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     env:
       PARALLEL_PROCESSOR_COUNT: 4
     strategy:
