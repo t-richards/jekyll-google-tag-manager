@@ -39,6 +39,7 @@ jobs:
           files: coverage/coverage.xml
 
       - name: Run mutation tests
+        if: matrix.ruby-version == '4.0'
         run: bin/rake mutation
 
       - name: Lint code
